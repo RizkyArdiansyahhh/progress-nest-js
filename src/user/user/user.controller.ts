@@ -1,23 +1,41 @@
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import * as common from '@nestjs/common';
 
-@Controller('api/users')
+@common.Controller('api/users')
 export class UserController {
-  @Get('/:id')
-  getById(@Param('id') id: string): string {
+  @common.Get('/sampleResponse')
+  @common.Header('Content-Type', 'application/json')
+  @common.HttpCode(200)
+  sampleresponse(): Record<string, string> {
+    return {
+      Data: 'Sample Data',
+    };
+  }
+
+  @common.Get('/redirect')
+  @common.Redirect()
+  redirect(): common.HttpRedirectResponse {
+    return {
+      url: '/api/users/sampleResponse',
+      statusCode: 301,
+    };
+  }
+
+  @common.Get('/:id')
+  getById(@common.Param('id') id: string): string {
     return `Get ${id}`;
   }
 
-  @Get()
-  getQuery(@Query('page') page: string): string {
+  @common.Get()
+  getQuery(@common.Query('page') page: string): string {
     return `Get ${page}`;
   }
 
-  @Post()
+  @common.Post()
   post(): string {
     return 'POST';
   }
 
-  @Get()
+  @common.Get()
   get(): string {
     return 'GET';
   }
