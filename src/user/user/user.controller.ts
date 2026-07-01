@@ -7,12 +7,27 @@ import {
   Post,
   Query,
   Redirect,
+  Req,
+  Res,
 } from '@nestjs/common';
 
 import type { HttpRedirectResponse } from '@nestjs/common';
+import type { Request, Response } from 'express';
 
 @Controller('api/users')
 export class UserController {
+  @Get('/setCookie')
+  setCookie(@Query('name') name: string, @Res() response: Response) {
+    response.cookie('name', name);
+    response.status(200).send('Cookie set successfully');
+  }
+
+  @Get('/getCookie')
+  getCookie(@Req() request: Request) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return request.cookies['name'];
+  }
+
   @Get('/sampleResponse')
   @Header('Content-Type', 'application/json')
   @HttpCode(200)
