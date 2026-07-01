@@ -13,9 +13,17 @@ import {
 
 import type { HttpRedirectResponse } from '@nestjs/common';
 import type { Request, Response } from 'express';
+import { UserService } from './user.service';
 
 @Controller('api/users')
 export class UserController {
+  constructor(private userService: UserService) {}
+
+  @Get('/sayHello/:name')
+  sayHello(@Param('name') name: string): string {
+    return this.userService.sayHello(name);
+  }
+
   @Get('/setCookie')
   setCookie(@Query('name') name: string, @Res() response: Response) {
     response.cookie('name', name);
