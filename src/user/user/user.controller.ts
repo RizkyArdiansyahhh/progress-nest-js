@@ -14,11 +14,19 @@ import {
 import type { HttpRedirectResponse } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { UserService } from './user.service';
+import { Connection } from '../connection/connection';
 
 @Controller('api/users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private connection: Connection,
+  ) {}
 
+  @Get('/getConnection')
+  getConnection(): string {
+    return this.connection.getName();
+  }
   @Get('/sayHello/:name')
   sayHello(@Param('name') name: string): string {
     return this.userService.sayHello(name);
