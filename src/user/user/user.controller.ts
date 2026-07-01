@@ -1,41 +1,52 @@
-import * as common from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Header,
+  HttpCode,
+  Param,
+  Post,
+  Query,
+  Redirect,
+} from '@nestjs/common';
 
-@common.Controller('api/users')
+import type { HttpRedirectResponse } from '@nestjs/common';
+
+@Controller('api/users')
 export class UserController {
-  @common.Get('/sampleResponse')
-  @common.Header('Content-Type', 'application/json')
-  @common.HttpCode(200)
+  @Get('/sampleResponse')
+  @Header('Content-Type', 'application/json')
+  @HttpCode(200)
   sampleresponse(): Record<string, string> {
     return {
       Data: 'Sample Data',
     };
   }
 
-  @common.Get('/redirect')
-  @common.Redirect()
-  redirect(): common.HttpRedirectResponse {
+  @Get('/redirect')
+  @Redirect()
+  redirect(): HttpRedirectResponse {
     return {
       url: '/api/users/sampleResponse',
       statusCode: 301,
     };
   }
 
-  @common.Get('/:id')
-  getById(@common.Param('id') id: string): string {
+  @Get('/:id')
+  getById(@Param('id') id: string): string {
     return `Get ${id}`;
   }
 
-  @common.Get()
-  getQuery(@common.Query('page') page: string): string {
+  @Get()
+  getQuery(@Query('page') page: string): string {
     return `Get ${page}`;
   }
 
-  @common.Post()
+  @Post()
   post(): string {
     return 'POST';
   }
 
-  @common.Get()
+  @Get()
   get(): string {
     return 'GET';
   }
