@@ -1,11 +1,8 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
-import {
-  Connection,
-  MySQLConnection,
-  PostgreSQLConnection,
-} from './connection/connection';
+import { Connection, createConnection } from './connection/connection';
+import { ConfigService } from '@nestjs/config';
 
 console.log('DATABASE =', process.env.DATABASE);
 
@@ -15,10 +12,8 @@ console.log('DATABASE =', process.env.DATABASE);
     UserService,
     {
       provide: Connection,
-      useClass:
-        process.env.DATABASE == 'postgres'
-          ? PostgreSQLConnection
-          : MySQLConnection,
+      useFactory: createConnection,
+      inject: [ConfigService],
     },
   ],
 })
