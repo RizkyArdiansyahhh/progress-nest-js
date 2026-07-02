@@ -16,5 +16,6 @@ console.log('DATABASE =', process.env.DATABASE);
       inject: [ConfigService],
     },
   ],
+  exports: [UserService],
 })
 export class UserModule {}
